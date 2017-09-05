@@ -4,8 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/addGroup"
-        android:title="@string/btn_add_group"
-        app:showAsAction="never" />
+        android:id="@+id/addGroupChild"
+        android:icon="@drawable/plus"
+        android:title="@string/btn_add_child"
+        app:showAsAction="ifRoom" />
 
 </menu>

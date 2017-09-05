@@ -10,11 +10,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 
 import com.xwray.groupie.ViewHolder
+import poc.bringme.groupie.ItemDecorations
 
 class InsetItemDecoration(
         @param:Dimension private val gutter: Int,
-        private val key: String,
-        private val value: String,
+        private val key: String = ItemDecorations.INSET_TYPE_KEY,
+        private val value: String = ItemDecorations.INSET,
         @ColorInt bgColor: Int = 0) : RecyclerView.ItemDecoration() {
 
     private val paint: Paint = Paint()

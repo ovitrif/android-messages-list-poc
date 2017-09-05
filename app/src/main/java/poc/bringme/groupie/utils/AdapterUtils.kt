@@ -9,12 +9,15 @@ class AdapterUtils(
         private val data: Data) {
 
     fun addFirstPageOfMessages() {
-        adapter.add(data.messageGroup)
         adapter.add(data.messageSection)
         adapter.add(data.loader)
     }
 
-    fun clear() {
-        adapter.clear()
+    fun addFirstPageOfGroups() {
+        adapter.addAll(listOf(
+                dummyMessageGroup(),
+                dummyMessageGroup(),
+                dummyMessageGroup()
+        ))
     }
 }

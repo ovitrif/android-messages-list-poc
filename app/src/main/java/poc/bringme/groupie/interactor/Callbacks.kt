@@ -9,10 +9,6 @@ import com.xwray.groupie.ViewHolder
 class Callbacks(private val swipeCallback: SwipeCallback) {
 
     fun swipe(groupAdapter: GroupAdapter<ViewHolder>, section: Section) = object : SwipeTouchCallback() {
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return false
-        }
-
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val item = groupAdapter.getItem(viewHolder.adapterPosition)
             val position = section.getPosition(item)
@@ -26,7 +22,6 @@ class Callbacks(private val swipeCallback: SwipeCallback) {
             }
         }
     }
-
     interface SwipeCallback {
         fun onSwipeRemove(payload: SwipeRemovePayload)
     }

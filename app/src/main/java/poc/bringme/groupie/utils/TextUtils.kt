@@ -5,4 +5,4 @@ import com.thedeanda.lorem.LoremIpsum
 private val loremIpsum = LoremIpsum.getInstance()
 
 fun createRandomText() = loremIpsum.getWords(10, 12).capitalize() + '.'
-fun createRandomTitle() = loremIpsum.getTitle(3)
+fun createRandomTitle() = loremIpsum.getTitle(3)!!

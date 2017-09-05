@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">GroupiePOC</string>
+    <string name="title_groups">Message Groups</string>
 
     <string name="btn_expand">Expand</string>
     <string name="btn_undo">Undo</string>
-    <string name="btn_add_group">Add Message Group</string>
+    <string name="btn_add_child">Add Message Group Child</string>
+    <string name="btn_groups_demo">Message Groups</string>
 
     <string name="messages_delete_success">Message deleted</string>
 </resources>

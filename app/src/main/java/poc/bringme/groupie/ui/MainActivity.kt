@@ -1,4 +1,4 @@
-package poc.bringme.groupie
+package poc.bringme.groupie.ui
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,18 +10,14 @@ import android.view.MenuItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
+import poc.bringme.groupie.R
 import poc.bringme.groupie.data.Data
 import poc.bringme.groupie.interactor.Callbacks
 import poc.bringme.groupie.interactor.Listeners
-import poc.bringme.groupie.item.decoration.HeaderItemDecoration
 import poc.bringme.groupie.item.decoration.InsetItemDecoration
 import poc.bringme.groupie.utils.AdapterUtils
-import poc.bringme.groupie.utils.dummyMessageGroup
+import poc.bringme.groupie.utils.createRandomMessages
 import poc.bringme.groupie.utils.dummyMessageSection
-
-val INSET_TYPE_KEY = "inset_type"
-val INSET = "inset"
-val PAGE_COUNT = 5
 
 class MainActivity : AppCompatActivity(), MainView {
 
@@ -39,16 +35,8 @@ class MainActivity : AppCompatActivity(), MainView {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        groupLayoutManager = GridLayoutManager(this, 1)
-
-        callbacks = Callbacks(this)
-        listeners = Listeners(this, groupAdapter, groupLayoutManager, data)
-        adapterUtils = AdapterUtils(groupAdapter, data)
-        gutter = resources.getDimensionPixelSize(R.dimen.padding_small)
-
-        fab.setOnClickListener { onFabClick() }
-        refreshLayout.setOnRefreshListener({ onRefresh() })
-
+        initVars()
+        initListeners()
         initListView()
 
         adapterUtils.addFirstPageOfMessages()
@@ -56,29 +44,27 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_terms, menu)
+        inflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.addGroup -> {
-                onAddGroupClicked()
+            R.id.groupsDemo -> {
+                onGroupsDemoClicked()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onAddGroupClicked() {
-        groupAdapter.add(0, dummyMessageGroup())
-        recyclerView.scrollToPosition(0)
-
+    override fun onGroupsDemoClicked() {
+        Router(this).to(GroupsActivity::class.java)
     }
 
     override fun onRefresh() {
-        adapterUtils.clear()
-        groupAdapter.add(data.createRandomMessages(6))
+        groupAdapter.clear()
+        groupAdapter.add(createRandomMessages(6))
         groupAdapter.add(data.loader)
         recyclerView.clearOnScrollListeners()
         recyclerView.addOnScrollListener(listeners.onBottomReached().apply { reset() })
@@ -107,6 +93,19 @@ class MainActivity : AppCompatActivity(), MainView {
         recyclerView.scrollToPosition(0)
     }
 
+    private fun initVars() {
+        groupLayoutManager = GridLayoutManager(this, 1)
+        callbacks = Callbacks(this)
+        listeners = Listeners(this, groupAdapter, groupLayoutManager, data)
+        adapterUtils = AdapterUtils(groupAdapter, data)
+        gutter = resources.getDimensionPixelSize(R.dimen.padding_small)
+    }
+
+    private fun initListeners() {
+        fab.setOnClickListener { onFabClick() }
+        refreshLayout.setOnRefreshListener({ onRefresh() })
+    }
+
     private fun initListView() {
         groupAdapter.apply {
             setOnItemClickListener(listeners.onItemClick)
@@ -114,8 +113,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
         recyclerView.apply {
             layoutManager = groupLayoutManager
-            addItemDecoration(HeaderItemDecoration(gutter, R.layout.item_header))
-            addItemDecoration(InsetItemDecoration(gutter, INSET_TYPE_KEY, INSET))
+            addItemDecoration(InsetItemDecoration(gutter))
             adapter = groupAdapter
 
             addOnScrollListener(listeners.onBottomReached())

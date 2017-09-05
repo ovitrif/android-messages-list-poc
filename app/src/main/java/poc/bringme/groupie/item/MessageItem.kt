@@ -1,10 +1,10 @@
 package poc.bringme.groupie.item
 
 import android.view.View
+import com.xwray.groupie.GroupDataObserver
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.item_message_simple.view.*
-import poc.bringme.groupie.INSET
-import poc.bringme.groupie.INSET_TYPE_KEY
+import poc.bringme.groupie.ItemDecorations
 import poc.bringme.groupie.R
 
 open class MessageItem @JvmOverloads constructor(
@@ -14,7 +14,11 @@ open class MessageItem @JvmOverloads constructor(
         var hasImage: Boolean = false) : RemovableItem() {
 
     init {
-        extras.put(INSET_TYPE_KEY, INSET)
+        extras.put(ItemDecorations.INSET_TYPE_KEY, ItemDecorations.INSET)
+    }
+
+    fun getParent(): GroupDataObserver? {
+        return this.parentDataObserver
     }
 
     override fun getLayout(): Int {
